@@ -1,0 +1,57 @@
+# Welding program (offline programmed against the NOMINAL part pose from cell.yaml).
+# Process: MAG welding, solid wire G3Si1 1.2 mm, shielding gas Ar + 18% CO2, fillet welds a3 on 4 mm steel.
+
+robot:
+  group: welder              # MoveIt group whose tip is the wire tip (torch_tcp)
+  tcp_link: torch_tcp
+  home_joints: [0.0, 1.5707, 0.0, 0.0, -1.5707, 0.0]
+  preferred_flange_dir: [0.0, 0.0, -1.0]   # roll of the torch around the wire: keep flange looking down
+
+motion:
+  air_velocity_scaling: 0.1    # PTP air moves (fraction of max joint speed; Hyundai config: keep <= 0.2)
+  approach_distance: 0.06      # m, approach / retreat along the torch axis
+  approach_speed: 0.10         # m/s, linear approach / retreat
+  clearance_height: 0.12       # m, safe height above approach/retreat points for air moves
+  clearance_speed: 0.20        # m/s, linear descent / rise to the clearance height
+  accel: 0.5                   # m/s^2, TCP acceleration for linear moves
+  step: 0.001                  # m, Cartesian interpolation step
+
+process:
+  wire_diameter_mm: 1.2
+  wire_density: 7850           # kg/m^3
+  arc_efficiency: 0.8          # MAG thermal efficiency (EN 1011-1: k = 0.8)
+
+seams:
+  - name: rib_left
+    type: fillet_line
+    feature: rib_left          # corner between the base plate and the -Y face of the rib
+    reverse: false             # travel +X (away from the robot)
+    trim: 0.010                # m, stay away from the rib ends
+    speed: 0.010               # m/s (0.6 m/min)
+    current: 220               # A
+    voltage: 24.0              # V
+    wire_feed: 8.0             # m/min
+    work_angle: 45             # deg, torch vs. base plate
+    travel_angle: 10           # deg, >0 = push
+  - name: rib_right
+    type: fillet_line
+    feature: rib_right
+    reverse: true              # travel -X (back to the robot)
+    trim: 0.010
+    speed: 0.010
+    current: 220
+    voltage: 24.0
+    wire_feed: 8.0
+    work_angle: 45
+    travel_angle: 10
+  - name: tube_ring
+    type: fillet_circle
+    feature: tube
+    start_angle: 180           # deg around the tube, 0 = +X of the part
+    sweep: 370                 # deg (10 deg overlap to close the ring)
+    speed: 0.008
+    current: 200
+    voltage: 23.0
+    wire_feed: 7.0
+    work_angle: 45
+    travel_angle: 5

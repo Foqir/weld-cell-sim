@@ -1,0 +1,19 @@
+# Official HD Hyundai Robotics ROS 2 packages (BSD-3-Clause), pinned to the commits this project was tested with.
+# Fetch with fetch_deps.bat (or: vcs import ros2_ws/src < hdr.repos).
+repositories:
+  hdr_description:
+    type: git
+    url: https://github.com/hyundai-robotics/hdr_description.git
+    version: 8512ee3a110e9e75967d3e1fda8477d0ba6fcd05
+  hdr_client_driver:
+    type: git
+    url: https://github.com/hyundai-robotics/hdr_client_driver.git
+    version: 047edf62ec9bb9bb04aaf788f58fc9ce92cd2816
+  hdr_ros2_driver:
+    type: git
+    url: https://github.com/hyundai-robotics/hdr_ros2_driver.git
+    version: 38d627fc8a3edccd96a4b34f46122a817de9ed2b
+  hdr_simulation_gz:
+    type: git
+    url: https://github.com/hyundai-robotics/hdr_simulation_gz.git
+    version: 1014ffe7be3efa3a301d64708be674082f36e64f

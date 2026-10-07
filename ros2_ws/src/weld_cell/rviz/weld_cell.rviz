@@ -1,0 +1,69 @@
+Panels:
+  - Class: rviz_common/Displays
+    Name: Displays
+  - Class: rviz_common/Views
+    Name: Views
+Visualization Manager:
+  Class: ""
+  Displays:
+    - Class: rviz_default_plugins/Grid
+      Name: Grid
+      Cell Size: 0.5
+      Plane Cell Count: 10
+      Color: 160; 160; 164
+      Value: true
+    - Class: rviz_default_plugins/RobotModel
+      Name: Robot
+      Description Source: Topic
+      Description Topic:
+        Value: /robot_description
+      Alpha: 1
+      Value: true
+    - Class: moveit_rviz_plugin/PlanningScene
+      Name: Cell (MoveIt scene)
+      Planning Scene Topic: /monitored_planning_scene
+      Robot Description: robot_description
+      Scene Geometry:
+        Scene Alpha: 0.9
+        Scene Display Time: 0.01
+        Show Scene Geometry: true
+      Scene Robot:
+        Show Robot Visual: false
+        Show Robot Collision: false
+      Value: true
+    - Class: rviz_default_plugins/MarkerArray
+      Name: Weld (seams, bead, arc)
+      Topic:
+        Value: /weld/markers
+      Value: true
+    - Class: rviz_default_plugins/TF
+      Name: TF
+      Enabled: false
+      Value: false
+  Enabled: true
+  Global Options:
+    Background Color: 48; 48; 48
+    Fixed Frame: world
+    Frame Rate: 30
+  Tools:
+    - Class: rviz_default_plugins/Interact
+    - Class: rviz_default_plugins/MoveCamera
+    - Class: rviz_default_plugins/Select
+  Value: true
+  Views:
+    Current:
+      Class: rviz_default_plugins/Orbit
+      Distance: 3.2
+      Focal Point:
+        X: 0.8
+        Y: 0.0
+        Z: 0.7
+      Name: Current View
+      Pitch: 0.45
+      Target Frame: world
+      Yaw: 3.9
+Window Geometry:
+  Height: 900
+  Width: 1300
+  X: 60
+  Y: 60

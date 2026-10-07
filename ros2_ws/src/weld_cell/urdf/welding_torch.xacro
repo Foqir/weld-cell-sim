@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+<!-- MIG/MAG welding torch with a bent (swan-neck) nozzle, mounted on the robot flange (tool0).
+     torch_tcp = tip of the welding wire (stick-out end); its +Z axis points out of the nozzle. -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro name="welding_torch" params="parent bend_deg:=45 body_len:=0.14 neck_len:=0.12 nozzle_len:=0.06 stickout:=0.015">
+    <xacro:property name="th" value="${radians(bend_deg)}"/>
+    <xacro:property name="L2" value="${neck_len + nozzle_len + stickout}"/>
+
+    <material name="torch_black"><color rgba="0.12 0.12 0.12 1.0"/></material>
+    <material name="torch_gray"><color rgba="0.45 0.45 0.48 1.0"/></material>
+    <material name="torch_brass"><color rgba="0.80 0.62 0.25 1.0"/></material>
+    <material name="torch_copper"><color rgba="0.85 0.45 0.20 1.0"/></material>
+
+    <link name="welding_torch">
+      <!-- insulating mount -->
+      <visual>
+        <origin xyz="0 0 0.015" rpy="0 0 0"/>
+        <geometry><cylinder radius="0.04" length="0.03"/></geometry>
+        <material name="torch_gray"/>
+      </visual>
+      <!-- torch body -->
+      <visual>
+        <origin xyz="0 0 ${0.03 + (body_len - 0.03) / 2}" rpy="0 0 0"/>
+        <geometry><cylinder radius="0.022" length="${body_len - 0.03}"/></geometry>
+        <material name="torch_black"/>
+      </visual>
+      <!-- bend -->
+      <visual>
+        <origin xyz="0 0 ${body_len}" rpy="0 0 0"/>
+        <geometry><sphere radius="0.022"/></geometry>
+        <material name="torch_black"/>
+      </visual>
+      <!-- swan neck -->
+      <visual>
+        <origin xyz="${neck_len / 2 * sin(th)} 0 ${body_len + neck_len / 2 * cos(th)}" rpy="0 ${th} 0"/>
+        <geometry><cylinder radius="0.013" length="${neck_len}"/></geometry>
+        <material name="torch_black"/>
+      </visual>
+      <!-- gas nozzle -->
+      <visual>
+        <origin xyz="${(neck_len + nozzle_len / 2) * sin(th)} 0 ${body_len + (neck_len + nozzle_len / 2) * cos(th)}" rpy="0 ${th} 0"/>
+        <geometry><cylinder radius="0.011" length="${nozzle_len}"/></geometry>
+        <material name="torch_brass"/>
+      </visual>
+      <!-- welding wire stick-out -->
+      <visual>
+        <origin xyz="${(L2 - stickout / 2) * sin(th)} 0 ${body_len + (L2 - stickout / 2) * cos(th)}" rpy="0 ${th} 0"/>
+        <geometry><cylinder radius="0.0008" length="${stickout}"/></geometry>
+        <material name="torch_copper"/>
+      </visual>
+
+      <collision>
+        <origin xyz="0 0 ${body_len / 2}" rpy="0 0 0"/>
+        <geometry><cylinder radius="0.04" length="${body_len}"/></geometry>
+      </collision>
+      <collision>
+        <origin xyz="${neck_len / 2 * sin(th)} 0 ${body_len + neck_len / 2 * cos(th)}" rpy="0 ${th} 0"/>
+        <geometry><cylinder radius="0.014" length="${neck_len}"/></geometry>
+      </collision>
+      <collision>
+        <origin xyz="${(neck_len + nozzle_len / 2 - 0.005) * sin(th)} 0 ${body_len + (neck_len + nozzle_len / 2 - 0.005) * cos(th)}" rpy="0 ${th} 0"/>
+        <geometry><cylinder radius="0.011" length="${nozzle_len - 0.01}"/></geometry>
+      </collision>
+
+      <inertial>
+        <mass value="2.0"/>
+        <origin xyz="0.03 0 0.12" rpy="0 0 0"/>
+        <inertia ixx="0.01" ixy="0" ixz="0" iyy="0.01" iyz="0" izz="0.002"/>
+      </inertial>
+    </link>
+
+    <joint name="${parent}-welding_torch" type="fixed">
+      <parent link="${parent}"/>
+      <child link="welding_torch"/>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="torch_tcp"/>
+    <joint name="welding_torch-torch_tcp" type="fixed">
+      <parent link="welding_torch"/>
+      <child link="torch_tcp"/>
+      <origin xyz="${L2 * sin(th)} 0 ${body_len + L2 * cos(th)}" rpy="0 ${th} 0"/>
+    </joint>
+  </xacro:macro>
+</robot>

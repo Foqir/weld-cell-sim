@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- HD Hyundai Robotics HDR robot (official hdr_description model) + welding torch + gz_ros2_control. -->
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="$(arg name)">
+  <xacro:arg name="robot_model" default="hdr20_17"/>
+  <xacro:arg name="name" default="hdr_robot"/>
+  <xacro:arg name="use_sim" default="true"/>
+  <xacro:arg name="use_mock_hardware" default="false"/>
+  <xacro:arg name="openapi_ip" default="192.168.1.150"/>
+  <xacro:arg name="command_buffer_size" default="2"/>
+  <xacro:arg name="controllers_file" default="$(find weld_cell)/config/controllers.yaml"/>
+  <xacro:arg name="initial_positions_file" default="$(find weld_cell)/config/initial_positions.yaml"/>
+
+  <xacro:include filename="$(find hdr_description)/urdf/robots/$(arg robot_model)/$(arg robot_model).urdf.xacro"/>
+  <xacro:include filename="$(find hdr_description)/urdf/hdr.ros2_control.xacro"/>
+  <xacro:include filename="$(find weld_cell)/urdf/welding_torch.xacro"/>
+
+  <xacro:welding_torch parent="tool0"/>
+
+  <xacro:hdr_ros2_control
+    name="$(arg name)"
+    robot_model="$(arg robot_model)"
+    use_sim="$(arg use_sim)"
+    use_mock_hardware="$(arg use_mock_hardware)"
+    initial_positions_file="$(arg initial_positions_file)"
+    openapi_ip="$(arg openapi_ip)"
+    command_buffer_size="$(arg command_buffer_size)"
+    update_rate="100"
+  />
+
+  <xacro:if value="$(arg use_sim)">
+    <gazebo>
+      <plugin filename="libgz_ros2_control-system.so" name="gz_ros2_control::GazeboSimROS2ControlPlugin">
+        <parameters>$(arg controllers_file)</parameters>
+        <controller_manager_node_name>controller_manager</controller_manager_node_name>
+      </plugin>
+    </gazebo>
+  </xacro:if>
+</robot>
