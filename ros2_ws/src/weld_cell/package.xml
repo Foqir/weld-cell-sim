@@ -4,7 +4,7 @@
   <name>weld_cell</name>
   <version>0.1.0</version>
   <description>Digital twin of a robotic arc-welding cell (HD Hyundai Robotics HDR robot, MoveIt 2, Gazebo).</description>
-  <maintainer email="150429951+Foqir@users.noreply.github.com">Ilay Volchonok</maintainer>
+  <maintainer email="150429951+Foqir@users.noreply.github.com">Ilay Volkov</maintainer>
   <license>BSD-3-Clause</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
