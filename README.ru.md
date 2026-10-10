@@ -6,7 +6,7 @@ ROS 2 Jazzy + Gazebo Harmonic + MoveIt 2 + ros2_control в одном Docker-о�
 Робот: **HD Hyundai Robotics HDR20-17** (20 кг, вылет 1742 мм, ближайший к коботу HDC25-18: 25 кг / 1880 мм)
 по официальным пакетам производителя: `hdr_description`, `hdr_ros2_driver` (MoveIt-конфиги),
 `hdr_simulation_gz` (github.com/hyundai-robotics, ветка `jazzy`).
-Проект полностью независим от `C:\dev\px4-vtol-sim` (БПЛА): свой образ, свой контейнер, свои бэкапы.
+Проект полностью независим от `px4-vtol-sim` (БПЛА): свой образ, свой контейнер, свои бэкапы.
 
 ## Запуск
 
